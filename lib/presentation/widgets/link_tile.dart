@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../data/models/shortened_link.dart';
+import 'package:link_app/domain/entities/shortened_link_entity.dart';
 
 class LinkTile extends StatelessWidget {
-  final ShortenedLink link;
+  final ShortenedLinkEntity link;
   const LinkTile({super.key, required this.link});
 
   @override

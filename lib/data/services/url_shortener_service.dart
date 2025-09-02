@@ -1,21 +1,15 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import '../../data/models/shortened_link.dart';
+import 'package:link_app/core/adapters/http/i_http_adpter.dart';
+import 'package:link_app/data/models/shortened_link_model.dart';
+import 'package:link_app/domain/entities/shortened_link_entity.dart';
 
 class UrlShortenerService {
+  final IHttpAdapter http;
   final String baseUrl = 'https://url-shortener-server.onrender.com/api/alias';
 
-  Future<ShortenedLink> shortenUrl(String url) async {
-    final response = await http.post(
-      Uri.parse(baseUrl),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'url': url}),
-    );
+  UrlShortenerService(this.http);
 
-    if (response.statusCode == 200) {
-      return ShortenedLink.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Erro ao encurtar URL');
-    }
+  Future<ShortenedLinkEntity> shortenUrl(String url) async {
+    final data = await http.post(baseUrl, {'url': url});
+    return ShortenedLinkModel.fromJson(data);
   }
 }

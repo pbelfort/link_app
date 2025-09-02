@@ -1,29 +1,51 @@
-import 'package:flutter/material.dart';
-import '../../data/models/shortened_link.dart';
-import '../../data/services/url_shortener_service.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_it/get_it.dart';
+import '../../domain/entities/shortened_link_entity.dart';
+import '../../domain/usecases/shorten_url_usecase.dart';
 
-class UrlProvider extends ChangeNotifier {
-  final UrlShortenerService service;
-  UrlProvider(this.service);
+final urlProvider = StateNotifierProvider<UrlProvider, UrlState>(
+  (ref) => UrlProvider(),
+);
 
-  final List<ShortenedLink> _history = [];
+class UrlState {
+  final List<ShortenedLinkEntity> history;
+  final bool loading;
+
+  UrlState({this.history = const [], this.loading = false});
+
+  UrlState copyWith({List<ShortenedLinkEntity>? history, bool? loading}) {
+    return UrlState(
+      history: history ?? this.history,
+      loading: loading ?? this.loading,
+    );
+  }
+}
+
+class UrlProvider extends StateNotifier<UrlState> {
+  final ShortenUrlUseCase _shortenUrlUseCase =
+      GetIt.instance<ShortenUrlUseCase>();
+
+  final List<ShortenedLinkEntity> _history = [];
   bool _loading = false;
 
-  List<ShortenedLink> get history => List.unmodifiable(_history);
+  UrlProvider() : super(UrlState());
+
+  List<ShortenedLinkEntity> get history => List.unmodifiable(_history);
   bool get loading => _loading;
 
   Future<void> shorten(String url) async {
+    if (url.isEmpty) return;
+
     _loading = true;
-    notifyListeners();
 
     try {
-      final link = await service.shortenUrl(url);
+      // Usecase retorna a entidade
+      final ShortenedLinkEntity link = await _shortenUrlUseCase(url);
       _history.insert(0, link);
     } catch (e) {
       rethrow;
     } finally {
       _loading = false;
-      notifyListeners();
     }
   }
 }
