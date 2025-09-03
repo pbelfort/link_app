@@ -3,13 +3,13 @@ import 'package:link_app/domain/entities/alias_entity.dart';
 import 'package:link_app/domain/repositories/alias/i_alias_repository.dart';
 
 class AliasRepository implements IAliasRepository {
-  final IAliasRemote _urlShortenerService;
+  final IAliasRemote _aliasRemote;
 
-  AliasRepository(this._urlShortenerService);
+  AliasRepository(this._aliasRemote);
 
   @override
   Future<AliasResponse> createAlias(String url) async {
-    return await _urlShortenerService.createAlias(url);
+    return await _aliasRemote.createAlias(url);
   }
 
   @override
