@@ -2,22 +2,23 @@ import 'package:get_it/get_it.dart';
 import 'package:link_app/core/adapters/http/http_adapter.dart';
 import 'package:link_app/core/adapters/http/i_http_adpter.dart';
 import 'package:http/http.dart' as http;
-import '../../data/services/url_shortener_service.dart';
+import 'package:link_app/data/remote/alias_remote.dart';
+import '../../data/remote/i_alias_remote.dart';
 import '../../domain/usecases/create_alias_usecase.dart';
 
 final _getIt = GetIt.instance;
 
 void setupLocator() {
-  // http adapter
+  // adapter
   _getIt.registerLazySingleton<IHttpAdapter>(() => HttpAdapter(http.Client()));
 
-  // services
-  _getIt.registerLazySingleton<UrlShortenerService>(
-    () => UrlShortenerService(_getIt<IHttpAdapter>()),
+  // remote
+  _getIt.registerLazySingleton<IAliasRemote>(
+    () => AliasRemote(_getIt.get<IHttpAdapter>()),
   );
 
-  // usecases
+  // usecase
   _getIt.registerLazySingleton<CreateAliasUseCase>(
-    () => CreateAliasUseCase(_getIt<UrlShortenerService>()),
+    () => CreateAliasUseCase(_getIt.get<IAliasRemote>()),
   );
 }

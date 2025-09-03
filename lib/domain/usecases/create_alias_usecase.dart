@@ -1,8 +1,8 @@
 import 'package:link_app/domain/entities/alias_entity.dart';
-import '../../data/services/url_shortener_service.dart';
+import '../../data/remote/i_alias_remote.dart';
 
 class CreateAliasUseCase {
-  final UrlShortenerService service;
+  final IAliasRemote service;
 
   CreateAliasUseCase(this.service);
 
