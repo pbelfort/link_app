@@ -1,16 +1,15 @@
 import 'dart:convert';
-
+import 'package:http/http.dart';
 import 'package:link_app/core/adapters/http/i_http_adpter.dart';
-import 'package:http/http.dart' as http;
 
 class HttpAdapter implements IHttpAdapter {
-  final http.Client client;
+  final http = Client();
 
-  HttpAdapter(this.client);
+  HttpAdapter();
 
   @override
   Future<Map<String, dynamic>> get(String url) async {
-    final response = await client.get(Uri.parse(url));
+    final response = await http.get(Uri.parse(url));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return jsonDecode(response.body);
@@ -24,7 +23,7 @@ class HttpAdapter implements IHttpAdapter {
     String url,
     Map<String, dynamic> body,
   ) async {
-    final response = await client.post(
+    final response = await http.post(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(body),
