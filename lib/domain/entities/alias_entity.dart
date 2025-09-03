@@ -1,9 +1,9 @@
-class ShortenedLinkEntity {
+class AliasEntity {
   final String alias;
   final String original;
   final String short;
 
-  ShortenedLinkEntity({
+  AliasEntity({
     required this.alias,
     required this.original,
     required this.short,

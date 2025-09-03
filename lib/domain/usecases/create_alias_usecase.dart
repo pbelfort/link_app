@@ -1,12 +1,12 @@
-import 'package:link_app/domain/entities/shortened_link_entity.dart';
+import 'package:link_app/domain/entities/alias_entity.dart';
 import '../../data/services/url_shortener_service.dart';
 
-class ShortenUrlUseCase {
+class CreateAliasUseCase {
   final UrlShortenerService service;
 
-  ShortenUrlUseCase(this.service);
+  CreateAliasUseCase(this.service);
 
-  Future<ShortenedLinkEntity> call(String url) async {
+  Future<AliasEntity> call(String url) async {
     if (url.isEmpty) {
       throw ArgumentError('URL não pode ser vazia');
     }

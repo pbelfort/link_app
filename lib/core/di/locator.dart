@@ -3,7 +3,7 @@ import 'package:link_app/core/adapters/http/http_adapter.dart';
 import 'package:link_app/core/adapters/http/i_http_adpter.dart';
 import 'package:http/http.dart' as http;
 import '../../data/services/url_shortener_service.dart';
-import '../../domain/usecases/shorten_url_usecase.dart';
+import '../../domain/usecases/create_alias_usecase.dart';
 
 final _getIt = GetIt.instance;
 
@@ -17,7 +17,7 @@ void setupLocator() {
   );
 
   // usecases
-  _getIt.registerLazySingleton<ShortenUrlUseCase>(
-    () => ShortenUrlUseCase(_getIt<UrlShortenerService>()),
+  _getIt.registerLazySingleton<CreateAliasUseCase>(
+    () => CreateAliasUseCase(_getIt<UrlShortenerService>()),
   );
 }

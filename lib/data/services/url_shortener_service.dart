@@ -1,6 +1,6 @@
 import 'package:link_app/core/adapters/http/i_http_adpter.dart';
-import 'package:link_app/data/models/shortened_link_model.dart';
-import 'package:link_app/domain/entities/shortened_link_entity.dart';
+import 'package:link_app/data/models/alias_model.dart';
+import 'package:link_app/domain/entities/alias_entity.dart';
 
 class UrlShortenerService {
   final IHttpAdapter http;
@@ -8,8 +8,8 @@ class UrlShortenerService {
 
   UrlShortenerService(this.http);
 
-  Future<ShortenedLinkEntity> shortenUrl(String url) async {
+  Future<AliasEntity> shortenUrl(String url) async {
     final data = await http.post(baseUrl, {'url': url});
-    return ShortenedLinkModel.fromJson(data);
+    return AliasModel.fromJson(data);
   }
 }

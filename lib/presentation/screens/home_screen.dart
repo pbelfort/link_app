@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:link_app/presentation/providers/url_state.dart';
-import '../providers/url_provider.dart';
+import 'package:link_app/presentation/providers/alias_state.dart';
+import '../providers/alias_provider.dart';
 import '../widgets/link_tile.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -12,8 +12,8 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  late UrlProvider _provider;
-  late UrlState _state;
+  late AliasProvider _provider;
+  late AliasState _state;
   final TextEditingController _controller = TextEditingController();
 
   @override
@@ -41,7 +41,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   : () async {
                       if (_controller.text.isNotEmpty) {
                         try {
-                          await _provider.shorten(_controller.text);
+                          await _provider.createAlias(_controller.text);
                           _controller.clear();
                         } catch (_) {
                           ScaffoldMessenger.of(context).showSnackBar(
