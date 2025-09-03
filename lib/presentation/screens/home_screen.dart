@@ -22,7 +22,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _provider = ref.read(urlProvider.notifier);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('URL Shortener')),
+      appBar: AppBar(
+        title: const Text('URL Shortener'),
+        backgroundColor: Colors.transparent,
+        scrolledUnderElevation: 0,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -41,7 +45,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
                 IconButton(
                   onPressed: () {
-                    if (_provider.loading) return;
+                    if (_state.loading) return;
                     final url = _controller.text;
                     if (url.isNotEmpty) {
                       _provider.createAlias(url: url, context: context);
@@ -58,7 +62,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Text('Recently shortened URLs'),
             ),
             const SizedBox(height: 20),
-
+            if (_state.loading) const LinearProgressIndicator(),
             Expanded(
               child: CustomScrollView(
                 slivers: [

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:link_app/presentation/providers/alias_state.dart';
-import '../../domain/entities/alias_entity.dart';
 import '../../domain/usecases/create_alias_usecase.dart';
 
 final urlProvider = StateNotifierProvider<AliasProvider, AliasState>(
@@ -13,22 +12,17 @@ class AliasProvider extends StateNotifier<AliasState> {
   final CreateAliasUseCase _createUrlAliasUseCase = GetIt.I
       .get<CreateAliasUseCase>();
 
-  bool _loading = false;
-
   AliasProvider() : super(AliasState());
-
-  List<AliasEntity> get history => state.history;
-  bool get loading => _loading;
 
   Future<void> createAlias({
     required String url,
     required BuildContext context,
   }) async {
     if (url.isEmpty) return;
-    _loading = true;
+    state = state.copyWith(loading: true);
     try {
-      final AliasEntity link = await _createUrlAliasUseCase.call(url);
-      state = state.copyWith(history: [link, ...state.history]);
+      final alias = await _createUrlAliasUseCase.call(url);
+      state = state.copyWith(history: [alias, ...state.history]);
     } catch (e) {
       if (!context.mounted) return;
       ScaffoldMessenger.of(
@@ -36,7 +30,7 @@ class AliasProvider extends StateNotifier<AliasState> {
       ).showSnackBar(const SnackBar(content: Text('Erro ao encurtar URL')));
       rethrow;
     } finally {
-      _loading = false;
+      state = state.copyWith(loading: false);
     }
   }
 }
