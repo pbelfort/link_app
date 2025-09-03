@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:link_app/presentation/providers/alias_state.dart';
@@ -19,13 +20,20 @@ class AliasProvider extends StateNotifier<AliasState> {
   List<AliasEntity> get history => state.history;
   bool get loading => _loading;
 
-  Future<void> createAlias(String url) async {
+  Future<void> createAlias({
+    required String url,
+    required BuildContext context,
+  }) async {
     if (url.isEmpty) return;
     _loading = true;
     try {
       final AliasEntity link = await _createUrlAliasUseCase.call(url);
       state = state.copyWith(history: [link, ...state.history]);
     } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Erro ao encurtar URL')));
       rethrow;
     } finally {
       _loading = false;

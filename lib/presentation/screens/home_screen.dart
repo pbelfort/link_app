@@ -27,43 +27,51 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(
-              controller: _controller,
-              decoration: const InputDecoration(
-                labelText: 'Digite a URL',
-                border: OutlineInputBorder(),
-              ),
-            ),
             const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: _provider.loading
-                  ? null
-                  : () async {
-                      if (_controller.text.isNotEmpty) {
-                        try {
-                          await _provider.createAlias(_controller.text);
-                          _controller.clear();
-                        } catch (_) {
-                          if (!context.mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Erro ao encurtar URL'),
-                            ),
-                          );
-                        }
-                      }
-                    },
-              child: _provider.loading
-                  ? const CircularProgressIndicator(color: Colors.white)
-                  : const Text('Encurtar'),
+            Row(
+              children: [
+                Flexible(
+                  child: TextField(
+                    controller: _controller,
+                    decoration: const InputDecoration(
+                      labelText: 'Digite a URL',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    if (_provider.loading) return;
+                    final url = _controller.text;
+                    if (url.isNotEmpty) {
+                      _provider.createAlias(url: url, context: context);
+                      _controller.clear();
+                    }
+                  },
+                  icon: const Icon(Icons.send),
+                ),
+              ],
             ),
             const SizedBox(height: 20),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Recently shortened URLs'),
+            ),
+            const SizedBox(height: 20),
+
             Expanded(
-              child: ListView.builder(
-                itemCount: _state.history.length,
-                itemBuilder: (context, index) {
-                  return LinkTile(link: _state.history[index]);
-                },
+              child: CustomScrollView(
+                slivers: [
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      childCount: _state.history.length,
+                      (context, index) {
+                        final link = _state.history[index];
+                        return LinkTile(link: link);
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
