@@ -44,6 +44,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           await _provider.createAlias(_controller.text);
                           _controller.clear();
                         } catch (_) {
+                          if (!context.mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Erro ao encurtar URL'),
