@@ -8,8 +8,8 @@ class AliasRepository implements IAliasRepository {
   AliasRepository(this._urlShortenerService);
 
   @override
-  Future<AliasEntity> createAlias(String url) async {
-    return await _urlShortenerService.shortenUrl(url);
+  Future<AliasResponse> createAlias(String url) async {
+    return await _urlShortenerService.createAlias(url);
   }
 
   @override
