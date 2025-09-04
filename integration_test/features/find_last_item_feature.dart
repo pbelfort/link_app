@@ -9,16 +9,12 @@ Future<void> findLastItemFeature(WidgetTester tester) async {
     matching: find.byType(Scrollable),
   );
 
+  final itemFinder = find.byType(LinkTile).last;
+  expect(itemFinder, findsOneWidget);
+
+  await tester.scrollUntilVisible(itemFinder, 500.0, scrollable: listFinder);
+  await tester.pumpAndSettle();
   final lastItemFinder = find.byKey(const ValueKey('www.google+0.com'));
-  Finder itemFinder = find.byType(LinkTile).last;
-
-  while (lastItemFinder.evaluate() != itemFinder.evaluate()) {
-    await tester.scrollUntilVisible(itemFinder, 500.0, scrollable: listFinder);
-    await tester.pumpAndSettle();
-
-    itemFinder = find.byType(LinkTile).last;
-    expect(itemFinder, findsOneWidget);
-  }
 
   expect(lastItemFinder, findsOneWidget);
 }
