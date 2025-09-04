@@ -12,9 +12,18 @@ Future<void> findLastItemFeature(WidgetTester tester) async {
   final itemFinder = find.byType(LinkTile).last;
   expect(itemFinder, findsOneWidget);
 
-  await tester.scrollUntilVisible(itemFinder, 500.0, scrollable: listFinder);
-  await tester.pumpAndSettle();
-  final lastItemFinder = find.byKey(const ValueKey('www.google+0.com'));
+  bool isLastItem = false;
 
+  while (!isLastItem) {
+    final widget = tester.widget<Widget>(itemFinder);
+    if (widget.key == const ValueKey('www.google+0.com')) {
+      isLastItem = true;
+      break;
+    }
+    await tester.scrollUntilVisible(itemFinder, 500.0, scrollable: listFinder);
+    await tester.pumpAndSettle();
+  }
+
+  final lastItemFinder = find.byKey(const ValueKey('www.google+0.com'));
   expect(lastItemFinder, findsOneWidget);
 }
