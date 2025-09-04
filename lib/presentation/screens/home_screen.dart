@@ -4,6 +4,8 @@ import 'package:link_app/presentation/providers/alias_state.dart';
 import '../providers/alias_provider.dart';
 import '../widgets/link_tile.dart';
 
+const kCustomScrollViewKey = ValueKey('mainScrollView');
+
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
@@ -51,6 +53,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       _provider.createAlias(url: url, context: context);
                       _controller.clear();
                     }
+                    FocusScope.of(context).unfocus();
                   },
                   icon: const Icon(Icons.send),
                 ),
@@ -65,13 +68,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             if (_state.loading) const LinearProgressIndicator(),
             Expanded(
               child: CustomScrollView(
+                key: kCustomScrollViewKey,
                 slivers: [
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
                       childCount: _state.history.length,
                       (context, index) {
                         final link = _state.history[index];
-                        return LinkTile(link: link);
+                        return LinkTile(link: link, key: Key(link.original));
                       },
                     ),
                   ),
