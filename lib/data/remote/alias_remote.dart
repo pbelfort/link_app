@@ -16,7 +16,7 @@ class AliasRemote implements IAliasRemote {
       final data = await http.post(baseUrl, {'url': url});
       return Right(AliasModel.fromJson(data));
     } catch (e) {
-      return Left(Failure(e.toString()));
+      return Left(Failure.catchHttpError(e, 'AliasRemote-createAlias'));
     }
   }
 }

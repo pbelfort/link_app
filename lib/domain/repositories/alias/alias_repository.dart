@@ -8,8 +8,11 @@ class AliasRepository implements IAliasRepository {
   AliasRepository(this._aliasRemote);
 
   @override
-  Future<AliasResponse> createAlias(String url) async {
-    return await _aliasRemote.createAlias(url);
+  Future<AliasEntity> createAlias(String url) async {
+    final result = await _aliasRemote.createAlias(url);
+    return result.fold((failure) {
+      throw Exception('${failure.message} (code: ${failure.errorCode})');
+    }, (alias) => alias);
   }
 
   @override

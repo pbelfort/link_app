@@ -6,6 +6,7 @@ import 'package:link_app/domain/repositories/alias/alias_repository.dart';
 import 'package:link_app/domain/usecases/create_alias_usecase.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+
 import 'create_alias_usecase_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<AliasRemote>()])

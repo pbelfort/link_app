@@ -7,15 +7,10 @@ class CreateAliasUseCase {
   CreateAliasUseCase(this._repository);
 
   Future<AliasEntity> call(String url) async {
-    if (url.isEmpty) {
-      throw ArgumentError('URL não pode ser vazia');
-    }
+    if (url.isEmpty) throw ArgumentError('URL cannot be empty');
 
     final response = await _repository.createAlias(url);
 
-    return response.fold(
-      (failure) => throw Exception(failure.message),
-      (alias) => alias,
-    );
+    return response;
   }
 }
