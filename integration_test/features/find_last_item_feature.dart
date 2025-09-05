@@ -16,7 +16,7 @@ Future<void> findLastItemFeature(WidgetTester tester) async {
 
   while (!isLastItem) {
     final widget = tester.widget<Widget>(itemFinder);
-    if (widget.key == const ValueKey('www.google+0.com')) {
+    if (widget.key == const ValueKey('http://www.google+0.com')) {
       isLastItem = true;
       break;
     }
@@ -24,6 +24,6 @@ Future<void> findLastItemFeature(WidgetTester tester) async {
     await tester.pumpAndSettle();
   }
 
-  final lastItemFinder = find.byKey(const ValueKey('www.google+0.com'));
+  final lastItemFinder = find.byKey(const ValueKey('http://www.google+0.com'));
   expect(lastItemFinder, findsOneWidget);
 }

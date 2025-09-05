@@ -9,6 +9,11 @@ class CreateAliasUseCase {
   Future<AliasEntity> call(String url) async {
     if (url.isEmpty) throw ArgumentError('URL cannot be empty');
 
+    final isValidUrl = Uri.parse(url).host.isNotEmpty;
+
+    if (!isValidUrl) {
+      throw ArgumentError('Invalid URL format');
+    }
     final response = await _repository.createAlias(url);
 
     return response;

@@ -23,6 +23,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _state = ref.watch(urlProvider);
     _provider = ref.read(urlProvider.notifier);
 
+    ref.listen<AliasState>(urlProvider, (previous, next) {
+      if (next.errorMessage != null) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(next.errorMessage!)));
+      }
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text('URL Shortener'),
@@ -40,7 +47,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   child: TextField(
                     controller: _controller,
                     decoration: const InputDecoration(
-                      labelText: 'Digite a URL',
+                      labelText: 'http://example.com',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -49,10 +56,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   onPressed: () {
                     if (_state.loading) return;
                     final url = _controller.text;
-                    if (url.isNotEmpty) {
-                      _provider.createAlias(url: url, context: context);
-                      _controller.clear();
-                    }
+                    _provider.createAlias(url: url);
+                    _controller.clear();
                     FocusScope.of(context).unfocus();
                   },
                   icon: const Icon(Icons.send),

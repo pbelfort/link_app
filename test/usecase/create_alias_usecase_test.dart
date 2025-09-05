@@ -22,18 +22,18 @@ void main() {
   });
 
   test('when request is successful', () async {
-    when(mockAliasRemote.createAlias('www.google.com')).thenAnswer(
+    when(mockAliasRemote.createAlias('http://www.google.com')).thenAnswer(
       (_) async => Right(
         AliasEntity(
           alias: '702889725',
-          original: 'www.google.com',
+          original: 'http://www.google.com',
           short:
               'https://url-shortener-server.onrender.com/api/alias/702889725',
         ),
       ),
     );
 
-    final result = await createAliasUseCase.call('www.google.com');
+    final result = await createAliasUseCase.call('http://www.google.com');
     expect(result, isA<AliasEntity>());
   });
 }

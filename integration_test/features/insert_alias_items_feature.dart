@@ -8,7 +8,7 @@ Future<void> insertAliasItemsFeature({
   for (int i = 0; i < numberOfItems; i++) {
     await tester.tap(find.byType(TextField));
     await tester.pumpAndSettle();
-    await tester.enterText(find.byType(TextField), 'www.google+$i.com');
+    await tester.enterText(find.byType(TextField), 'http://www.google+$i.com');
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(Icons.send));
     await tester.pumpAndSettle();

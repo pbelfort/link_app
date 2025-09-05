@@ -36,7 +36,7 @@ Future<void> main() async {
 
     testWidgets('check scroll when has more than five items', (tester) async {
       await builHomeScreen(tester);
-      await insertAliasItemsFeature(tester: tester, numberOfItems: 8);
+      await insertAliasItemsFeature(tester: tester, numberOfItems: 18);
       await findLastItemFeature(tester);
     });
   });

@@ -4,6 +4,7 @@ import 'package:link_app/core/adapters/http/i_http_adpter.dart';
 import 'package:link_app/data/remote/alias_remote.dart';
 import 'package:link_app/domain/repositories/alias/alias_repository.dart';
 import 'package:link_app/domain/repositories/alias/i_alias_repository.dart';
+import 'package:link_app/domain/usecases/validate_url_usecase.dart';
 import '../../data/remote/i_alias_remote.dart';
 import '../../domain/usecases/create_alias_usecase.dart';
 
@@ -27,4 +28,6 @@ void setupLocator() {
   _getIt.registerLazySingleton<CreateAliasUseCase>(
     () => CreateAliasUseCase(_getIt.get<IAliasRepository>()),
   );
+
+  _getIt.registerLazySingleton<ValidateUrlUseCase>(() => ValidateUrlUseCase());
 }
