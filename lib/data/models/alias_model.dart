@@ -14,4 +14,12 @@ class AliasModel extends AliasEntity {
       short: json['_links']['short'],
     );
   }
+
+  factory AliasModel.toEntity(AliasEntity entity) {
+    return AliasModel(
+      alias: entity.alias,
+      original: entity.original,
+      short: entity.short,
+    );
+  }
 }
