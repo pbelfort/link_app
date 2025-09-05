@@ -14,9 +14,4 @@ class AliasRepository implements IAliasRepository {
       throw Exception('${failure.message} (code: ${failure.errorCode})');
     }, (alias) => alias);
   }
-
-  @override
-  Future<List<AliasEntity>> getAliasHistory() async {
-    return [];
-  }
 }
