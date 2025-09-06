@@ -1,14 +1,14 @@
 enum ValidateUrlType { empty, invalidFormat, validFormat }
 
 class ValidateUrlUseCase {
-  ValidateUrlType? call(String url) {
-    if (url.isEmpty) return ValidateUrlType.empty;
+  (bool, ValidateUrlType) call(String? url) {
+    if (url == null || url.isEmpty) return (false, ValidateUrlType.empty);
 
     final uri = Uri.tryParse(url);
     final isValid = uri != null && (uri.isAbsolute || uri.hasScheme);
 
-    if (!isValid) return ValidateUrlType.invalidFormat;
+    if (!isValid) return (false, ValidateUrlType.invalidFormat);
 
-    return ValidateUrlType.validFormat;
+    return (true, ValidateUrlType.validFormat);
   }
 }

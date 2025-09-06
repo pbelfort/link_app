@@ -4,10 +4,13 @@ import 'package:link_app/domain/entities/alias_entity.dart';
 import 'package:link_app/domain/usecases/create_alias_usecase.dart';
 import 'package:link_app/domain/usecases/validate_url_usecase.dart';
 import 'package:link_app/presentation/providers/alias_provider.dart';
-
 import 'package:mockito/mockito.dart';
-
 import 'provider_alias_test.mocks.dart';
+
+final testEmptyError = 'Field can not be empty';
+final testInvalidFormatError =
+    'Invalid URL format\nExample: http://www.example.com';
+final kExampleUrl = 'https://example.com';
 
 class FakeBuildContext {}
 
@@ -35,15 +38,13 @@ void main() {
     test('create one alias adding item to history', () async {
       final alias = AliasEntity(
         alias: 'abc',
-        original: 'https://example.com',
+        original: kExampleUrl,
         short: 'short',
       );
-      when(
-        mockAliasUseCase.call('https://example.com'),
-      ).thenAnswer((_) async => alias);
+      when(mockAliasUseCase.call(kExampleUrl)).thenAnswer((_) async => alias);
 
       // Use um contexto fake ou adapte o método para não depender de contexto real
-      await aliasProvider.createAlias(url: 'https://example.com');
+      await aliasProvider.createAlias(url: kExampleUrl);
 
       expect(aliasProvider.state.history.first, alias);
       expect(aliasProvider.state.errorMessage, isNull);
@@ -53,17 +54,13 @@ void main() {
 
     test('try to create alias with empty value', () async {
       await aliasProvider.createAlias(url: '');
-      expect(aliasProvider.state.errorMessage, 'Please enter a URL');
+      expect(aliasProvider.state.errorMessage, testEmptyError);
       expect(aliasProvider.state.loading, isFalse);
     });
 
     test('create alias with invalid url format', () async {
-      when(
-        mockAliasUseCase.call('example.com'),
-      ).thenThrow(Exception('Invalid URL format'));
-
       await aliasProvider.createAlias(url: 'example.com');
-      expect(aliasProvider.state.errorMessage, 'Invalid URL format');
+      expect(aliasProvider.state.errorMessage, testInvalidFormatError);
       expect(aliasProvider.state.loading, isFalse);
     });
   });

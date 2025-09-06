@@ -17,19 +17,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   late AliasProvider _provider;
   late AliasState _state;
   final TextEditingController _controller = TextEditingController();
-
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     _state = ref.watch(urlProvider);
     _provider = ref.read(urlProvider.notifier);
 
-    ref.listen<AliasState>(urlProvider, (previous, next) {
-      if (next.errorMessage != null) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(next.errorMessage!)));
-      }
-    });
     return Scaffold(
       appBar: AppBar(
         title: const Text('URL Shortener'),
@@ -41,28 +34,34 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: Column(
           children: [
             const SizedBox(height: 10),
-            Row(
-              children: [
-                Flexible(
-                  child: TextField(
-                    controller: _controller,
-                    decoration: const InputDecoration(
-                      labelText: 'http://example.com',
-                      border: OutlineInputBorder(),
+            Form(
+              key: _formKey,
+              child: Row(
+                children: [
+                  Flexible(
+                    child: TextFormField(
+                      controller: _controller,
+                      decoration: const InputDecoration(
+                        labelText: 'http://example.com',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) => _provider.validateUrl(value),
                     ),
                   ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    if (_state.loading) return;
-                    final url = _controller.text;
-                    _provider.createAlias(url: url);
-                    _controller.clear();
-                    FocusScope.of(context).unfocus();
-                  },
-                  icon: const Icon(Icons.send),
-                ),
-              ],
+                  IconButton(
+                    onPressed: () {
+                      if (_state.loading) return;
+                      if (_formKey.currentState!.validate()) {
+                        final url = _controller.text;
+                        _provider.createAlias(url: url);
+                        _controller.clear();
+                        FocusScope.of(context).unfocus();
+                      }
+                    },
+                    icon: const Icon(Icons.send),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 20),
             Align(

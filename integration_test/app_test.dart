@@ -7,6 +7,7 @@ import 'common/build_home_test.dart';
 import 'features/create_alias_feature.dart';
 import 'features/find_last_item_feature.dart';
 import 'features/insert_alias_items_feature.dart';
+import 'features/insert_invalid_url_feature.dart';
 import 'features/ui_widgets_feature.dart';
 
 Future<void> main() async {
@@ -38,6 +39,15 @@ Future<void> main() async {
       await builHomeScreen(tester);
       await insertAliasItemsFeature(tester: tester, numberOfItems: 18);
       await findLastItemFeature(tester);
+    });
+
+    testWidgets('insert empty url', (tester) async {
+      await builHomeScreen(tester);
+      await insertEmptyUrlFeature(tester);
+    });
+    testWidgets('insert invalid url', (tester) async {
+      await builHomeScreen(tester);
+      await insertInvalidUrlFeature(tester);
     });
   });
 }

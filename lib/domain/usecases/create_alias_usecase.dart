@@ -6,8 +6,8 @@ class CreateAliasUseCase {
 
   CreateAliasUseCase(this._repository);
 
-  Future<AliasEntity> call(String url) async {
-    if (url.isEmpty) throw ArgumentError('URL cannot be empty');
+  Future<AliasEntity> call(String? url) async {
+    if (url == null || url.isEmpty) throw ArgumentError('URL cannot be empty');
 
     final isValidUrl = Uri.parse(url).host.isNotEmpty;
 
