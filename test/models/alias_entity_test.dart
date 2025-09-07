@@ -5,7 +5,7 @@ import 'package:link_app/domain/entities/alias_entity.dart';
 
 void main() {
   group('AliasEntity', () {
-    test('deve criar uma instância corretamente', () {
+    test('should create an instance correctly', () {
       final entity = AliasEntity(
         alias: 'abc123',
         original: 'https://example.com',
