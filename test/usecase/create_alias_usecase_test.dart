@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:link_app/data/remote/alias_remote.dart';
 import 'package:link_app/domain/entities/alias_entity.dart';
-import 'package:link_app/domain/repositories/alias/alias_repository.dart';
+import 'package:link_app/domain/repositories/alias_repository.dart';
 import 'package:link_app/domain/usecases/create_alias_usecase.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
